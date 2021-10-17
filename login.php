@@ -1,3 +1,15 @@
+<?php
+
+if($_POST){
+    //POST情報がある時の処理
+    $host = $_SERVER['HTTP_HOST'];
+    $uri = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+    header("Location: //$host$uri/memberonly.php");
+    exit;
+}else{
+    //GETの時の処理
+}
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
