@@ -20,6 +20,14 @@ if($_POST){
         $errmsg[] = '確認用パスワードが一致しません';
     }
 
+    //新規登録処理
+    $userfile = './userinfo.txt';
+    if(!$errmsg){
+        $ph = password_hash($_POST['e'],PASSWORD_DEFAULT);
+        $line = '"'.$_POST['e'].'","'.$ph.'"'."\n";
+        $ret = file_put_contents($userfile,$line,FILE_APPEND);
+    }
+
     //リダイレクト
     if(!$errmsg){
         $host = $_SERVER['HTTP_HOST'];
@@ -29,6 +37,7 @@ if($_POST){
     }
 }else{
     //GETの時の処理
+    $_POST['e'] = '';
 }
 ?>
 <!DOCTYPE html>
@@ -57,7 +66,7 @@ if($_POST){
         }
         ?>
             <form action="./register.php" method="POST">
-                Eメール：<input type="email" name="e" value="" class="form-control"><br>
+                Eメール：<input type="email" name="e" value="<?php echo htmlspecialchars($_POST['e']); ?>" class="form-control"><br>
                 パスワード：<input type="password" name="p" value="" class="form-control"><br>
                 パスワード（確認）：<input type="password" name="p2" value="" class="form-control"><br>
                 <div class="button">
