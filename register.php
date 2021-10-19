@@ -20,8 +20,21 @@ if($_POST){
         $errmsg[] = '確認用パスワードが一致しません';
     }
 
-    //新規登録処理
     $userfile = './userinfo.txt';
+    $users = array();
+    if(file_exists($userfile)){
+        $users = file_get_contents($userfile);
+        $users = explode("\n",$users);
+        foreach($users as $k => $v){
+            $v_ary = str_getcsv($v);
+                if($v_ary[0] == $_POST['e']){
+                    $errmsg[] = 'すでに登録されたメールアドレスです';
+                    break;
+                }
+        }
+    }
+
+    //新規登録処理
     if(!$errmsg){
         $ph = password_hash($_POST['e'],PASSWORD_DEFAULT);
         $line = '"'.$_POST['e'].'","'.$ph.'"'."\n";
